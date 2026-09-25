@@ -1,0 +1,21 @@
+{
+  "name": "ai-knowledge-inbox-backend",
+  "version": "1.0.0",
+  "description": "Minimal AI Knowledge Inbox - RAG backend",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node --no-warnings src/server.js",
+    "dev": "node --no-warnings --watch src/server.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "openai": "^4.60.0"
+  }
+}
