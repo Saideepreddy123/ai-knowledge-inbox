@@ -27,8 +27,7 @@ export default function App() {
   }, [loadItems]);
 
   function handleItemAdded(newItem) {
-    // Optimistic prepend, then reconcile with server in the background
-    // (keeps preview/contentLength fields consistent with GET /items shape).
+    
     setItems((prev) => [
       {
         id: newItem.id,

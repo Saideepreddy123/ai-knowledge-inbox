@@ -3,11 +3,6 @@ import path from "node:path";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
-// Using Node's built-in `node:sqlite` (stable since Node 22.5+, no flag
-// needed on modern Node) instead of better-sqlite3. This avoids native
-// compilation entirely (no node-gyp / Visual Studio / build-essential
-// requirement), which is a real cross-platform pain point for a
-// take-home reviewers will run on their own machines.
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, "..", "..", "data");

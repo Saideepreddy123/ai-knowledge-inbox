@@ -1,24 +1,4 @@
-/**
- * Chunking strategy
- * ------------------
- * Fixed-size character windows with overlap, snapped to sentence/paragraph
- * boundaries where possible. This is deliberately simple:
- *
- *  - Character-based (not token-based) so it needs no tokenizer dependency.
- *  - CHUNK_SIZE_CHARS (~800 chars, ~150-200 tokens) keeps each chunk small
- *    enough to be a precise retrieval unit, but large enough to carry
- *    real context (a paragraph or two).
- *  - CHUNK_OVERLAP_CHARS (~120 chars) prevents a fact from being split
- *    exactly across a chunk boundary and lost to retrieval.
- *  - We try to break on a sentence end or blank line near the target size
- *    instead of a hard cut mid-word, which keeps chunks human-readable in
- *    the "source snippet" UI.
- *
- * Tradeoff: this ignores document structure (headings, tables, code
- * blocks). Fine for notes/articles; a production system would use a
- * structure-aware splitter (e.g. markdown/HTML-aware, or token-based with
- * a real tokenizer) and possibly semantic chunking.
- */
+
 
 const CHUNK_SIZE = parseInt(process.env.CHUNK_SIZE_CHARS || "800", 10);
 const CHUNK_OVERLAP = parseInt(process.env.CHUNK_OVERLAP_CHARS || "120", 10);
@@ -26,8 +6,7 @@ const CHUNK_OVERLAP = parseInt(process.env.CHUNK_OVERLAP_CHARS || "120", 10);
 const SENTENCE_BOUNDARY = /[.!?]\s/g;
 
 function findBreakPoint(text, from, to) {
-  // Search backwards from `to` for a sentence boundary or blank line,
-  // but not before `from` (which would make the chunk too small).
+  
   const window = text.slice(from, to);
   let lastBreak = -1;
 

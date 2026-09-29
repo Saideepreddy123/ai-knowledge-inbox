@@ -14,10 +14,7 @@ function isValidHttpUrl(value) {
   }
 }
 
-/**
- * Fetches a URL server-side and extracts readable text.
- * Strips script/style/nav/footer noise; keeps headings + paragraphs.
- */
+
 export async function fetchUrlContent(url) {
   if (!isValidHttpUrl(url)) {
     throw new ValidationError("Invalid URL. Must be a valid http(s) URL.");
@@ -59,9 +56,6 @@ export async function fetchUrlContent(url) {
   const html = await res.text();
   const $ = cheerio.load(html.slice(0, MAX_CONTENT_LENGTH * 2));
 
-  // Strip non-content chrome, plus citation superscripts (e.g. Wikipedia's
-  // <sup class="reference">[247]</sup>) and "[edit]" section links, which
-  // otherwise get scraped as literal "[247]" noise inside the paragraph text.
   $("script, style, nav, footer, header, noscript, iframe, svg").remove();
   $("sup.reference, sup[id^='cite_ref'], .mw-editsection, .reference").remove();
 
@@ -79,9 +73,6 @@ export async function fetchUrlContent(url) {
     text = $("body").text().replace(/\s+/g, " ").trim();
   }
 
-  // Belt-and-suspenders: strip any remaining bracketed citation markers
-  // ([1], [23], [citation needed], [edit]) that survive DOM stripping on
-  // sites that don't use Wikipedia's exact markup.
   text = text
     .replace(/\[\d+\]/g, "")
     .replace(/\[(edit|citation needed)\]/gi, "")

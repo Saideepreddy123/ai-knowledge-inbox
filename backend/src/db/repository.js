@@ -44,9 +44,6 @@ const insertChunkStmt = db.prepare(`
   VALUES (@id, @item_id, @chunk_index, @content, @embedding)
 `);
 
-// node:sqlite has no built-in `db.transaction()` helper (unlike
-// better-sqlite3), so we wrap explicitly. Still atomic: if any insert
-// throws, we roll back rather than leaving a partially-chunked item.
 export function insertChunksTx(itemId, chunks, embeddings) {
   db.exec("BEGIN");
   try {
@@ -73,12 +70,6 @@ const allChunksStmt = db.prepare(`
   JOIN items ON items.id = chunks.item_id
 `);
 
-/**
- * Retrieval: brute-force cosine similarity over all chunks.
- * Fine at the "single user, a few hundred/thousand chunks" scale this
- * assignment targets - see README "what breaks at scale" for the ANN
- * index this would need beyond that.
- */
 export function topKChunks(queryEmbedding, k = 4) {
   const rows = allChunksStmt.all();
   const scored = rows.map((row) => ({

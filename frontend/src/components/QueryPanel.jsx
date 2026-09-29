@@ -5,7 +5,7 @@ export default function QueryPanel() {
   const [question, setQuestion] = useState("");
   const [asking, setAsking] = useState(false);
   const [error, setError] = useState(null);
-  const [result, setResult] = useState(null); // { answer, sources, meta }
+  const [result, setResult] = useState(null); 
 
   async function handleSubmit(e) {
     e.preventDefault();

@@ -1,5 +1,4 @@
-// Typed errors so the error-handling middleware can map them to sensible
-// HTTP status codes instead of everything collapsing to a 500.
+
 
 export class AppError extends Error {
   constructor(message, statusCode = 500, details = undefined) {

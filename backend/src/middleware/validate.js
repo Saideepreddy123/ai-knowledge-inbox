@@ -1,7 +1,5 @@
 import { ValidationError } from "../services/errors.js";
 
-// Deliberately not pulling in zod/joi for two request shapes - kept as
-// small explicit functions so validation logic is easy to read/audit.
 
 export function validateIngestBody(body) {
   if (!body || typeof body !== "object") {

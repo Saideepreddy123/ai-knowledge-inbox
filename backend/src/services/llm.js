@@ -1,22 +1,6 @@
 import { logger } from "./logger.js";
 import { UpstreamFetchError } from "./errors.js";
 
-/**
- * Answer-generation provider
- * ---------------------------
- * Three interchangeable backends, checked in this priority order:
- *   1. OpenAI  - used when OPENAI_API_KEY is set (real synthesis).
- *   2. Groq    - used when GROQ_API_KEY is set instead. Groq's API is
- *      OpenAI-compatible (same request/response shape), so it's a drop-in
- *      swap via the same `openai` SDK with a different baseURL. Groq's
- *      free tier requires no credit card, which makes it the practical
- *      "real LLM" option for anyone who doesn't want to add billing just
- *      to demo this assignment.
- *   3. Local extractive fallback otherwise: composes an answer directly
- *      from the retrieved chunks (no generation, just selection + light
- *      templating) so the full ingest -> retrieve -> answer loop is
- *      demoable with zero external calls, zero signup, zero cost.
- */
 
 const USE_OPENAI = Boolean(process.env.OPENAI_API_KEY);
 const USE_GROQ = !USE_OPENAI && Boolean(process.env.GROQ_API_KEY);
@@ -74,8 +58,6 @@ async function remoteAnswer(question, contextChunks) {
   }
 }
 
-// Extractive fallback: no external model, just presents the most relevant
-// chunks as the "answer" with clear framing that it's un-synthesized.
 function localAnswer(question, contextChunks) {
   if (contextChunks.length === 0) {
     return "I couldn't find any saved content relevant to that question. Try adding some notes or URLs first.";

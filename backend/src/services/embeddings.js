@@ -1,25 +1,6 @@
 import { logger } from "./logger.js";
 import { UpstreamFetchError } from "./errors.js";
 
-/**
- * Embeddings provider
- * --------------------
- * Two interchangeable backends behind one `embed(texts)` function:
- *
- *  1. OpenAI (`text-embedding-3-small` by default) - used automatically
- *     when OPENAI_API_KEY is set. Real semantic embeddings.
- *
- *  2. Local hashing vectorizer - zero-dependency, zero-cost, deterministic
- *     fallback so the whole app runs fully offline out of the box (no key
- *     required to demo the pipeline). It's a bag-of-words hashed into a
- *     fixed-size vector (a la the "hashing trick" / feature hashing),
- *     weighted by simple TF, then L2-normalized so cosine similarity is
- *     meaningful. This captures lexical overlap, NOT semantic meaning
- *     (e.g. it won't know "car" ~ "automobile"). It's intentionally the
- *     "good enough to demo the full pipeline" option, not a production
- *     substitute for real embeddings - swap OPENAI_API_KEY in and the app
- *     automatically upgrades to real semantic search.
- */
 
 const LOCAL_DIM = 384;
 const USE_OPENAI = Boolean(process.env.OPENAI_API_KEY);

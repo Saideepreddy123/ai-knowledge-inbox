@@ -1,5 +1,4 @@
-// Minimal structured (JSON-line) logger. No external deps, no bloat.
-// In production this is where you'd swap in pino/winston -> shipped to a log sink.
+
 
 function log(level, msg, meta = {}) {
   const entry = {
